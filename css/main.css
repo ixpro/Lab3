@@ -34,11 +34,13 @@ text-decoration: none;
 	font-style: italic;
 }
 
-.intro {
-	background-image: url("../images/family.jpg");
+#introView {
+background-image: url("../images/family.jpg");
+min-height: 685px;
+background-position: 0 -86px;
 }
 
-.intro #callToAction {
+#introView #callToAction {
 	background: rgba(255, 255, 255, .8);
 	margin-top: 120px;
 	margin-left: 25px;
@@ -46,11 +48,11 @@ text-decoration: none;
 	margin-right: 25px;
 }
 
-.intro #startQuickly {
+#introView #startQuickly {
 	margin-bottom: 7px;
 }
 
-.intro #callToAction h2 {
+#introView #callToAction h2 {
 	padding-bottom: 5px;
 	border-bottom: 2px solid gray;
 }
@@ -64,28 +66,32 @@ text-decoration: none;
 background-image: url('../images/top-back.jpg');
 }
 
-#pplNbr {
+.pplNbr {
 width: 50px;
 text-align: center;
 }
 
-#sidebar #pplLbl {
+.sidebar .pplLbl {
 	padding-right: 15px;
 }
 
-#sidebar #dinnerCheckList {
+.sidebar .menuList {
 	margin-top: 20px;
 }
 
-#sidebar {
+.sidebar {
 	margin-bottom: 20px;
 }
 
-#sidebar h3 {
+.sidebar h3 {
 	margin-bottom: 20px;
 }
 
-#sidebar tfoot td {
+.confirmDinnerBtn {
+	width: 100%;
+}
+
+.sidebar tfoot td {
 	text-align: right;
 }
 
@@ -106,7 +112,7 @@ text-align: center;
 	color: rgb(176, 20, 20);
 }
 
-#sidebar #confirmDinnerBtn {
+#sidebar .confirmDinnerBtn {
 	width: 100%;
 }
 
@@ -125,10 +131,7 @@ padding-bottom: 5px;
 width: 140px;
 float: left;
 margin: 25px 28px 0px 0px !important;
-}
-
-#dishList li a {
-padding: 0px !important;
+cursor: pointer;
 }
 
 #dishList li .dishName {
@@ -205,6 +208,26 @@ margin-left: 15px;
 #printRecipe .btn{
 	width:100%;
 	margin-top: 25px;
+}
+
+#overviewList li img {
+width: 140px;
+height: 140px;
+}
+
+#overviewList li {
+width: 140px;
+float: left;
+margin: 25px 28px 0px 0px !important;
+}
+
+
+#overviewList li .dishName {
+text-align: center;
+padding: 5px;
+background-color: rgb(237, 237, 237);
+height: 50px;
+overflow: hidden;
 }
 
 #overviewList {

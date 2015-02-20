@@ -14,8 +14,9 @@
 
   <body>
 
-		<div class="container intro">
-			<div class="row" id="introHeader">
+		<div class="container">
+
+			<div class="row" id="topHeader">
 				<div class="col-md-3" >
 					<a href="index.html"><h1>Homelette</h1></a>
 				</div>
@@ -24,7 +25,7 @@
 				</div> 			
 	  		</div>
 		
-			<div class= "row">
+			<div id="introView" class= "row view" style="display: none;">
 				<div class="col-md-6" id="callToAction">
 					<h2>A home dinner service</h2>
 					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla efficitur magna non accumsan aliquam. Aliquam iaculis id neque et lobortis. Nulla maximus libero tempor facilisis bibendum. Donec dignissim sem nec libero ullamcorper maximus.
@@ -32,14 +33,205 @@
 					</br>
 					</p>
 					<div id="startQuickly">start quickly</div>
-					<a class="btn btn-warning" href="selectDish.html">Create new dinner</a>
+					<button class="btn btn-warning">Create new dinner</button>
 				</div>
 			</div>
-		</div> 
+
+			<div id="selectView" class="row view" style="display: none;">
+				<div class="sidebar col-md-3">
+					<h3>My Dinner</h3>
+					
+					<span   class="pplLbl">People</span> 					
+					<button class="minusButton">-</button>
+					<input  class="pplNbr" type="text" value="0">
+					<button class="plusButton">+</button>
+							
+					<table class="menuList table table-condensed">
+					  <thead>
+			                <tr>
+			                  <th>Dish name</th>
+			                  <th class="aRight">Cost</th>
+			                </tr>
+		              </thead>
+					  <tbody>
+					  	<tr>
+					  		<td class="pending">Pending</td>
+					  		<td class="aRight pending">0.00</td>
+					  	</tr>
+					  </tbody>
+					  <tfoot>
+					  		<tr>
+					  			<td class="pending" >SEK</td>
+					  			<td class="pending" >0.00</td>
+					  		</tr>
+					  </tfoot>
+					</table>
+					<button class="btn btn-warning confirmDinnerBtn"  >Confirm dinner</button>
+				</div>
+
+				<div class="col-md-9">
+					<div class="row" id="selectDishHeader">
+							<h3>Select dish</h3>
+							<div class="col-md-4">
+								<div class="input-group">
+						              <input type="text" class="form-control " placeholder="Text input">
+						              <span class="input-group-btn">
+						                  <button type="submit" class="btn btn-search">Search</button>
+						              </span>
+						        </div>
+							</div>
+							<div class="col-md-4">
+							<select class="form-control" id="filter">
+							  <option value="all" selected >All</option>
+							  <option value="starter">starter</option>
+							  <option value="main dish">main dish</option>
+							  <option value="dessert">dessert</option>
+							</select>
+							</div>
+					</div>
+
+					<div class="row">
+						<!-- Dishes List -->
+						<ul id="dishList" class="list-unstyled" >				  					  					  					  					  
+						</ul>
+						<!-- End of Dishes List -->
+					</div>
+					<!-- End of Select Dishes View -->
+				</div>
+				<!-- End of Select Dishes View -->
+			</div>
+
+			<div id="dishInfoView" class="row view" style="display: none;">
+				<div class="sidebar col-md-3">
+					<h3>My Dinner</h3>
+					
+					<span   class="pplLbl">People</span> 					
+					<button class="minusButton">-</button>
+					<input  class="pplNbr" type="text" value="0">
+					<button class="plusButton">+</button>
+							
+					<table class="menuList table table-condensed">
+					  <thead>
+			                <tr>
+			                  <th>Dish name</th>
+			                  <th class="aRight">Cost</th>
+			                </tr>
+		              </thead>
+					  <tbody>
+					  	<tr>
+					  		<td>Pending</td>
+					  		<td class="aRight">0.00</td>
+					  	</tr>
+					  </tbody>
+					  <tfoot>
+					  		<tr>
+					  			<td >SEK</td>
+					  			<td >0.00</td>
+					  		</tr>
+					  </tfoot>
+					</table>
+					<button class="btn btn-warning confirmDinnerBtn"  >Confirm dinner</button>
+				</div>
+
+				<div class="col-md-9">
+					<div class="row dishInfo">
+						<div class="col-md-6" id="dishInfoDescr">
+							
+							<a class="btn btn-warning" href="selectDish.html"><span class="glyphicon glyphicon-arrow-left">&nbsp;</span>Back to select dish</a>
+						</div>
+						<div class="col-md-6" id="ingridients">
+							<h3>Ingridients for <span></span> people</h3>
+
+							<table id="ingridientsTable" class="table table-condensed">
+							  <tbody>									  	
+							  </tbody>
+							  <tfoot>
+							  	<tr>
+							  		<td colspan="2">
+							  			<button id="confirmDishBtn" class="btn btn-warning" style="margin-top:15px;">Confirm Dish</button>
+							  		</td>
+							  		<td class="aLeft" style="padding-top:25px;">SEK</td>
+							  		<td class="aRight" id="ingridTotalSum" style="padding-top:25px;" ></td>
+							  	</tr>
+							  </tfoot>
+							</table>							
+						</div>
+					</div>
+					<div id="preparation">
+						<h2>Preparation</h2>
+						<p></p>
+					</div>
+
+				</div>
+				<!-- End of Select Dishes View -->
+			</div>
+
+
+	  		<div id="overviewView" class="view" style="display: none;">
+				<div class="row" id="overviewNavBar">
+						<div class="col-md-6">
+							<h3>My Dinner <span id="nbPpl"></span> people</h3>
+						</div>
+						<div class="col-md-6">
+							<button class="btn btn-warning pull-right editDinnerBtn"><span class="glyphicon glyphicon-arrow-left">&nbsp;</span>Go back and edit dinner</button>
+						</div>
+					<!-- End of Select Dishes View -->
+				</div>
+
+				<div class="navbar"> 
+				<div class="inner-nav" id="overviewList">
+						<ul class="nav navbar-nav">	  					  					  					  					  					  
+						</ul>				
+				</div>
+				</div>
+				<div class="row" id="printRecipe">
+						<div class="col-md-4 col-sm-4">
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<buton class="btn btn-warning printRecipeBtn">Print Full Recipe</a>
+						</div>
+							<div class="col-md-4 ">
+						</div>			
+				</div>
+			</div>
+
+	  		<div id="recipeView" class="view" style="display: none;">
+				<div class="row" id="overviewNavBar">
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<h3>My Dinner <span id="nbPpl">-</span> people</h3>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<button class="btn btn-warning pull-right editDinnerBtn"><span class="glyphicon glyphicon-arrow-left">&nbsp;</span>Go back and edit dinner</button>
+						</div>
+					<!-- End of Select Dishes View -->
+				</div>
+
+				<div id="">
+					<ul id= "recipeList" class="list-unstyled">
+					</ul> 			  					  
+				</div>
+			</div>
+
+		</div>                  
 
 	    <!-- jQuery -->
 	    <script src="https://code.jquery.com/jquery.js"></script>
 	    <!-- Bootstrap JavaScript, needed if you want for instance tabs, models, popovers etc. -->
 	    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+	    <script src="js/model/dinnerModel.js"></script>
+	    <script src="js/view/introView.js"></script>
+	    <script src="js/view/dishInfoView.js"></script>
+	    <script src="js/view/overviewView.js"></script>
+	    <script src="js/view/receipeView.js"></script>
+	    <script src="js/view/selectView.js"></script>
+
+	    <script src="js/controllers/selectViewCtrl.js"></script>
+	    <script src="js/controllers/introViewCtrl.js"></script>
+	    <script src="js/controllers/dishInfoViewCtrl.js"></script>	    
+	    <script src="js/controllers/overviewViewCtrl.js"></script>	  
+	    <script src="js/controllers/recipeViewCtrl.js"></script>	    
+	    <script src="js/app.js"></script>
+
   </body>
 </html>

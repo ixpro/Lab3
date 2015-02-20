@@ -1,43 +1,45 @@
 //OverviewView Object constructor
 var OverviewView = function(container,model) {
 
-  this.dishList = container.find("#dishList");
-
-  this.numberOfGuests = container.find("#nbPpl");
-  this.numberOfGuests.html( model.getNumberOfGuests());
-
-  //  <li>
-  // 	<img src="images/meatballs.jpg" alt="Meatballs">
-  // 	<div class="dishName">Lasagne</div>
-  // 	<div class="dishPrice">77.20 SEK</div>
-  // </li>
-
-  // <li id="totalCell">
-  // 	<div id="totalLbl">Total:</div>
-  // 	<div id="totalPrice">341.20 SEK</div>
-  // </li>	
+    this.dishList = container.find("#overviewList ul");
 
 
-  var menu = model.getFullMenu();
+    this.editDinnerBtn = container.find(".editDinnerBtn");
+    this.printRecipeBtn = container.find(".printRecipeBtn");
 
-  var menuListHtml = "";
+    this.numberOfGuests = container.find("#nbPpl");
+    model.addObserver(this);
 
-  	$.each( menu, function( index, dish ) {
 
-		dishHtml = "";
-		dishHtml += '<li>';
-		dishHtml += '<img src="images/'+ dish.image+'" alt="' + dish.name + '" >';
-		dishHtml += '<div class="dishName">'+ dish.name +'</div>';
-		dishHtml += '<div class="dishPrice">'+ model.getDishPrice(dish) +' SEK</div></li>';
+    this.update = function(param){
 
-		$('#dishList').append(dishHtml);
-	});
+          this.dishList.empty();
+          var nbGuests = model.getNumberOfGuests();
+          this.numberOfGuests.html(nbGuests);
 
-  	var totalPrice =  '<li id="totalCell">';
-        totalPrice += '<div id="totalLbl">Total:</div>';
-        totalPrice += '<div id="totalPrice">' + model.getTotalMenuPrice().toString() + 'SEK</div>';
-        totalPrice += '</li>';
+          var menu = model.getFullMenu();
+          var menuListHtml = "";
 
-  	this.dishList.append(totalPrice);
+          $.each( menu, function( index, dish ) {
+
+        		dishHtml = "";
+        		dishHtml += '<li>';
+        		dishHtml += '<img src="images/'+ dish.image+'" alt="' + dish.name + '" >';
+        		dishHtml += '<div class="dishName">'+ dish.name +'</div>';
+        		dishHtml += '<div class="dishPrice">'+ model.getDishPrice(dish) *nbGuests +' SEK</div></li>';
+
+        		$('#overviewList ul').append(dishHtml);
+        	});
+
+          	var totalPrice =  '<li id="totalCell">';
+                totalPrice += '<div id="totalLbl">Total:</div>';
+                totalPrice += '<div id="totalPrice">' + (model.getTotalMenuPrice() * nbGuests ).toString() + 'SEK</div>';
+                totalPrice += '</li>';
+
+          	this.dishList.append(totalPrice);
+    }
+
+    this.update();
+
 
 }

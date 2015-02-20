@@ -1,40 +1,47 @@
 //DinnerModel Object constructor
 var DinnerModel = function() {
  
-	//TODO Lab 2 implement the data structure that will hold number of guest
-	// and selected dinner options for dinner menu
+	var observersList 	= [];
+	var numberOfGuests  = 1;
+	var selectedDish 	= 0;
+	var fullMenu 		= [];
 
-	this.setNumberOfGuests = function(num) {
-		//TODO Lab 2
+	this.addObserver = function(observer)
+	{
+		observersList.push(observer);
+	}
+
+	this.notifyObservers = function(param){
+
+		$.each(observersList, function(index, observer) {
+			observer.update(param);
+		});
+	}
+
+  	this.setNumberOfGuests = function(num) {
 		// if the number of guests is less then 0, return false;
-		if(num < 0 ) return 0;
-
+		if(num < 1 ) return 0;
 		numberOfGuests = num;
+		this.notifyObservers("guestsNbr");
 		return 1;
 	}
 
 	// should return 
 	this.getNumberOfGuests = function() {
-		//TODO Lab 2
 		return numberOfGuests;
 	}
 
-	//Returns the dishES that ARE on the menu for A selected type 
-	this.getSelectedDishes = function(type) {
-		//TODO Lab 2
-		// return $(dishes).filter(function(index,dish) {
-		// 	return dish.type == type  &&  $.inArray( dish.id, fullMenu );
-		// });	
+	// //Returns the dishES that ARE on the menu for A selected type 
+	// this.getSelectedDishes = function(type) {
+	// 	var selectedDishesList = [];
 
-		var selectedDishesList = [];
+	// 	for (var i = 0; i < fullMenu.length; i++) {
+	// 		var dish = this.getDish(fullMenu[i]);
+	// 		if(dish.type == type) selectedDishesList.push(dish);
+	// 	};
 
-		for (var i = 0; i < fullMenu.length; i++) {
-			var dish = this.getDish(fullMenu[i]);
-			if(dish.type == type) selectedDishesList.push(dish);
-		};
-
-		return selectedDishesList;
-	}
+	// 	return selectedDishesList;
+	// }
 
 	this.getSelectedDish = function(){
 
@@ -42,7 +49,10 @@ var DinnerModel = function() {
 		return this.getDish(id);
 	}
 
-
+	this.setSelectedDish = function(id){
+		selectedDish = parseInt(id);
+		this.notifyObservers("selectedDish");
+	}
 
 	//Returns all the dishes on the menu.
 	this.getFullMenu = function() {
@@ -55,19 +65,10 @@ var DinnerModel = function() {
 		return $(dishes).filter(function(index,dish) {
 			return  $.inArray( dish.id, fullMenu) != -1;
 		});	
-
-		// var selectedDishesList = [];
-
-		// for (var i = 0; i < fullMenu.length; i++) {
-		// 	var dish = this.getDish(fullMenu[i]);
-		// 	selectedDishesList.push(dish);
-		// };
-		// return selectedDishesList;
 	}
 
 	//Returns all ingredients for all the dishes on the menu.
 	this.getAllIngredients = function() {
-		//TODO Lab 2
 		var allIngredients = {};
 
 		for (var i = 0; i < fullMenu.length; i++) {
@@ -81,8 +82,6 @@ var DinnerModel = function() {
 					allIngredients[ingredient.name]["price"]  	 += ingredient.price;
 				}else
 				{
-					//element = {};
-					//element[ingredient.name] = ingredient;
 					allIngredients[ingredient.name] = ingredient;
 				}
 			});
@@ -129,16 +128,24 @@ var DinnerModel = function() {
 
 		return totalPrice;
 	}
+
 	//Adds the passed dish to the menu. If the dish of that type already exists on the menu
 	//it is removed from the menu and the new one added.
 	this.addDishToMenu = function(id) {
-		//TODO Lab 2 
 		fullMenu.push(id);
+	}
+
+	//Adds the selected dish to the menu
+	this.addSelectedDishToMenu = function() {
+
+		if($.inArray( selectedDish, fullMenu ) !== -1) return;
+
+		fullMenu.push(selectedDish);
+		this.notifyObservers("menu");
 	}
 
 	//Removes dish from menu
 	this.removeDishFromMenu = function(id) {
-		//TODO Lab 2
 		fullMenu.remove(id);
 	}
 
@@ -177,11 +184,6 @@ var DinnerModel = function() {
 			}
 		}
 	}
-
-	var numberOfGuests = 5;
-	var selectedDish = 2;
-
-	var fullMenu = [2, 3];
 
 	// the dishes variable contains an array of all the 
 	// dishes in the database. each dish has id, name, type,
@@ -374,7 +376,7 @@ var DinnerModel = function() {
 			'price':4
 			}]
 		},{
-		'id':102,
+		'id':103,
 		'name':'MD 4',
 		'type':'main dish',
 		'image':'meatballs.jpg',
@@ -434,6 +436,5 @@ var DinnerModel = function() {
 		}
 	];
 
-console.log("s");
 
 }

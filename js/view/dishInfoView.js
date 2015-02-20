@@ -3,47 +3,92 @@ var DishInfoView = function(container,model) {
  
 	// Get all the relevant elements of the view (ones that show data
 	// and/or ones that responded to interaction)
-	this.numberOfGuests = container.find("#pplNbr");
-	this.numberOfGuests.val(model.getNumberOfGuests());
+	this.model = model;
+	this.numberOfGuests = container.find(".pplNbr");
+	this.numberOfGuests.val(this.model.getNumberOfGuests());
+	this.plusButton 	= container.find(".plusButton");
+	this.minusButton 	= container.find(".minusButton");
+	this.dishInfoDescr 	= container.find("#dishInfoDescr");
+
+	this.menuList    	= container.find(".menuList");
+	this.confirmDinnerBtn = container.find(".confirmDinnerBtn");
+	this.confirmDishBtn   = container.find("#confirmDishBtn");
+	this.preparation     = container.find("#preparation p");
+
+	this.model.addObserver(this);
+
+	this.update = function(param){
+
+			var selectedDish = model.getSelectedDish();
+
+			if(!selectedDish) return;
+
+			var nbGuests = this.model.getNumberOfGuests();
+			this.numberOfGuests.val(nbGuests);
+			container.find("#ingridients h3 span").html(nbGuests);
+
+			this.dishInfoDescr.empty();
+			// generating dish Description html
+			dishHtml =  "<h2>" +selectedDish.name+ "</h2>";
+			dishHtml += '<img class="dishInfoImg" src="images/' + selectedDish.image +'" alt="'+ selectedDish.name +'" >' ;
+			dishHtml += '<p></p>';
+
+			this.preparation.html(selectedDish.description);
+
+			//prepending to the dishInfoDescr container
+			this.dishInfoDescr.prepend(dishHtml);
 	
-	this.dishInfoDescr = container.find("#dishInfoDescr");
 
-	var selectedDish = model.getSelectedDish();
+			//========== Updating the menu List (at left)
 
-		// <h2>Lasagne</h2>
-		// <img class="dishInfoImg" src="images/lasagne.jpg" alt="Lasagne" >
-		// <p></p>
+			var fullMenu = model.getFullMenu();
+			// <tr>
+			// 	<td class="pending">Pending</td>
+			// 	<td class="aRight pending">0.00</td>
+			// </tr>
 
-	// generating dish Description html
-	dishHtml =  "<h2>" +selectedDish.name+ "</h2>";
-	dishHtml += '<img class="dishInfoImg" src="images/' + selectedDish.image +'" alt="'+ selectedDish.name +'" >' ;
-	dishHtml += '<p>' + selectedDish.description + '</p>';
+			// generating the list of items in the menu
+			var menuBodyHtml = "";
+			for (var i = 0; i < fullMenu.length; i++) {
 
-	//prepending to the dishInfoDescr container
-	this.dishInfoDescr.prepend(dishHtml);
+				var dish = fullMenu[i];
+				menuBodyHtml += "<tr>";
+				menuBodyHtml += "<td>" + fullMenu[i].name + "</td>";
+				menuBodyHtml += '<td class="aRigh">' + model.getDishPrice(dish) * nbGuests  + "</td>";
+				menuBodyHtml += "</tr>";
+			};
 
-	  	// <tr>
-	  	// 	<td class="aCenter">2 tbsp</td>
-	  	// 	<td class="aLeft">olive oil</td>
-	  	// 	<td class="aLeft">SEK</td>
-	  	// 	<td class="aRight">0.20</td>
-	  	// </tr>
-	
-	
-	//generating the ingridients html		
-	$.each( selectedDish.ingredients, function( index, ingredient ) {
+			this.menuList.find("tbody").empty();
+			this.menuList.find("tbody").html(menuBodyHtml);
 
-		ingridHtml = "<tr>";
-		ingridHtml += '<td class="aCenter">'+ ingredient.quantity + ' ' + ingredient.unit + '</td>';
-		ingridHtml += '<td class="aLeft">' +ingredient.name + '</td>';
-		ingridHtml += '<td class="aLeft">SEK</td>';
-		ingridHtml += '<td class="aRight">' + ingredient.price+ '</td></tr>';
-		$('#ingridientsTable tbody').append(ingridHtml);
-	});
+			// generating the total
+			var menuTotalHtml = "";
+			menuTotalHtml += "<tr>";
 
-	$('#ingridTotalSum').append(model.getSelectedDishPrice());
+			menuTotalHtml += "<td>SEK</td>";
+			menuTotalHtml += "<td>";
+			menuTotalHtml += model.getTotalMenuPrice() * nbGuests ;
+			menuTotalHtml += "</td>";
+			menuTotalHtml += "</tr>";
 
+			this.menuList.find("tfoot").empty();
+			this.menuList.find("tfoot").html(menuTotalHtml);		
 
-	
+			//generating the ingridients html
+			$('#ingridientsTable tbody').empty();
+			$('#ingridTotalSum').empty();
+			$.each( selectedDish.ingredients, function( index, ingredient ) {
+				ingridHtml = "<tr>";
+				ingridHtml += '<td class="aCenter">'+ ingredient.quantity * nbGuests + ' ' + ingredient.unit + '</td>';
+				ingridHtml += '<td class="aLeft">' +ingredient.name + '</td>';
+				ingridHtml += '<td class="aLeft">SEK</td>';
+				ingridHtml += '<td class="aRight">' + ingredient.price * nbGuests + '</td></tr>';
+				$('#ingridientsTable tbody').append(ingridHtml);
+			});
+
+			$('#ingridTotalSum').append(model.getSelectedDishPrice() * nbGuests);
+	}
+
+	this.update();
 }
  

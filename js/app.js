@@ -1,30 +1,29 @@
+function showView(viewId)
+{
+	$(".view").not("#"+viewId).hide();
+	$("#"+viewId).show();
+}
+
+
 $(function() {
+
 	//We instantiate our model
 	var model = new DinnerModel();
 	
+	introView      	 = new IntroView($("#introView"), model);
+	introViewCtrl  	 = new IntroViewCtrl(introView, model);
 
-	if( $('#selectView').length )
-	{
-	    //And create the needed controllers and views
-		var selectView = new SelectView($("#selectView"), model);
-	};
+	selectView       = new SelectView($("#selectView"), model);
+	selectViewCtrl 	 = new SelectViewCtrl(selectView, model);
 
-	if( $('#dishInfoView').length )
-	{
-	    //And create the needed controllers and views
-		var dishInfoView = new DishInfoView($("#dishInfoView"), model);
-	}
+	dishInfoView     = new DishInfoView($("#dishInfoView"), model);
+	dishInfoViewCtrl = new DishInfoViewCtrl(dishInfoView, model);
 
-	if( $('#overviewView').length )
-	{
-	    //And create the needed controllers and views
-		var overviewView = new OverviewView($("#overviewView"), model);
-	}
+	overviewView     = new OverviewView($("#overviewView"), model);
+	overviewViewCtrl = new OverviewViewCtrl(overviewView, model);
 
-	if( $('#recipeView').length )
-	{
-	    //And create the needed controllers and views
-		var recipeView = new RecipeView($("#recipeView"), model);
-	}	
+	recipeView 		 = new RecipeView($("#recipeView"), model);
+	recipeViewCtrl   = new RecipeViewCtrl(recipeView, model);
 
+	showView("introView");
 });
